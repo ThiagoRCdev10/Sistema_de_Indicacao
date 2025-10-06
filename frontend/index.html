@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Indicação</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Sistema de Indicação</h1>
+
+    <div id="register-section">
+      <h2>Cadastro</h2>
+      <form id="registerForm">
+        <input type="text" id="name" placeholder="Nome" required>
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <input type="hidden" id="referralCode">
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+
+    <div id="profile-section" class="hidden">
+      <h2>Perfil</h2>
+      <p>Nome: <span id="profile-name"></span></p>
+      <p>Pontos: <span id="profile-points"></span></p>
+      <p>Seu link de indicação: <span id="profile-link"></span></p>
+      <button id="copyBtn">Copiar Link</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
