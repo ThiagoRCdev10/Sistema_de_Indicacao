@@ -1,47 +1,26 @@
 const Usuario = require('../models/Usuario');
 const crypto = require('crypto');
 
-// Recebe o WebSocket server para enviar notificações
-let wss;
-function setWebSocketServer(wsServer) {
-  wss = wsServer;
-}
-
-// Função para notificar clientes sobre atualização de pontos
-async function notifyPointsUpdate(email) {
-  if (!wss) return;
-
-  const user = await Usuario.findOne({ email });
-  if (!user) return;
-
-  const payload = JSON.stringify({
-    email: user.email,
-    points: user.points
-  });
-
-  wss.clients.forEach(client => {
-    if (client.readyState === client.OPEN) {
-      client.send(payload);
-    }
-  });
-}
-
 // Função para registrar um novo usuário
 async function registerUsuario(req, res) {
   try {
     const { name, email, password, referralCode } = req.body;
 
+    // Validação básica
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Preencha todos os campos.' });
     }
 
+    // Verifica se o usuário já existe
     const existingUser = await Usuario.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'E-mail já registrado.' });
     }
 
+    // Gera um código de referência único
     const newReferralCode = crypto.randomBytes(4).toString('hex');
 
+    // Cria o novo usuário
     const usuario = new Usuario({
       name,
       email,
@@ -58,9 +37,6 @@ async function registerUsuario(req, res) {
       if (referrer) {
         referrer.points += 1;
         await referrer.save();
-
-        // Notifica via WS
-        await notifyPointsUpdate(referrer.email);
       }
     }
 
@@ -94,6 +70,5 @@ async function getUsuarioByEmail(req, res) {
 
 module.exports = {
   registerUsuario,
-  getUsuarioByEmail,
-  setWebSocketServer
+  getUsuarioByEmail
 };

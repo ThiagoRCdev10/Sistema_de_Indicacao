@@ -2,19 +2,18 @@ const http = require('http');
 const mongoose = require('mongoose');
 const url = require('url');
 const crypto = require('crypto');
-const WebSocket = require('ws');
 const Usuario = require('./models/Usuario');
 
 // Configurações
 const PORT = 3000;
 const MONGO_URI = 'mongodb+srv://thiago:kiarakiara12051997@cluster0.u788how.mongodb.net/';
 
-// Conecta ao MongoDB
+// Conecta ao MongoDB (especificando o banco de dados BancoDeDados)
 mongoose.connect(MONGO_URI, { dbName: 'BancoDeDados' })
   .then(() => console.log('✅ MongoDB conectado ao banco BancoDeDados!'))
   .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
-// Função para ler corpo da requisição
+// Função para ler o corpo da requisição com segurança
 function getRequestBody(req) {
   return new Promise((resolve, reject) => {
     let body = '';
@@ -31,8 +30,9 @@ function getRequestBody(req) {
   });
 }
 
-// Cria servidor HTTP
+// Servidor HTTP
 const server = http.createServer(async (req, res) => {
+  // Cabeçalhos CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -44,25 +44,29 @@ const server = http.createServer(async (req, res) => {
 
   const parsedUrl = url.parse(req.url, true);
 
-  // --- POST /api/usuarios/register ---
+  // Rota POST /api/usuarios/register
   if (req.method === 'POST' && parsedUrl.pathname === '/api/usuarios/register') {
     try {
       const data = await getRequestBody(req);
       const { name, email, password, referralCode } = data;
 
+      // Verifica campos obrigatórios
       if (!name || !email || !password) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ error: 'Preencha todos os campos.' }));
       }
 
+      // Verifica se já existe usuário com esse e-mail
       const existing = await Usuario.findOne({ email });
       if (existing) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         return res.end(JSON.stringify({ error: 'E-mail já cadastrado.' }));
       }
 
+      // Gera código de referência único
       const newReferralCode = crypto.randomBytes(4).toString('hex');
 
+      // Cria novo usuário
       const novoUsuario = new Usuario({
         name,
         email,
@@ -73,13 +77,12 @@ const server = http.createServer(async (req, res) => {
 
       await novoUsuario.save();
 
-      // Atualiza pontos de quem indicou
+      // Se foi indicado, soma ponto para quem indicou
       if (referralCode) {
         const referrer = await Usuario.findOne({ referralCode });
         if (referrer) {
           referrer.points += 1;
           await referrer.save();
-          notifyPointsUpdate(referrer.email); // ⚡ Notifica via WS
         }
       }
 
@@ -90,28 +93,28 @@ const server = http.createServer(async (req, res) => {
       }));
 
     } catch (err) {
-      console.error('Erro POST /api/usuarios/register:', err);
+      console.error('Erro na rota POST /api/usuarios/register:', err);
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Erro ao registrar usuário.' }));
     }
     return;
   }
 
-  // --- GET /api/usuarios ---
+  // Rota GET /api/usuarios
   if (req.method === 'GET' && parsedUrl.pathname === '/api/usuarios') {
     try {
       const usuarios = await Usuario.find();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(usuarios));
     } catch (err) {
-      console.error('Erro GET /api/usuarios:', err);
+      console.error('Erro na rota GET /api/usuarios:', err);
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Erro ao buscar usuários.' }));
     }
     return;
   }
 
-  // --- GET /api/usuarios/:email ---
+  // Rota GET /api/usuarios/:email (busca por e-mail)
   if (req.method === 'GET' && parsedUrl.pathname.startsWith('/api/usuarios/')) {
     try {
       const email = decodeURIComponent(parsedUrl.pathname.split('/').pop());
@@ -126,7 +129,7 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify(usuario));
 
     } catch (err) {
-      console.error('Erro GET /api/usuarios/:email:', err);
+      console.error('Erro na rota GET /api/usuarios/:email:', err);
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Erro ao buscar usuário.' }));
     }
@@ -138,33 +141,5 @@ const server = http.createServer(async (req, res) => {
   res.end(JSON.stringify({ message: 'Rota não encontrada.' }));
 });
 
-// --- WebSocket ---
-const wss = new WebSocket.Server({ server });
-
-wss.on('connection', (ws) => {
-  console.log('Cliente WS conectado');
-
-  ws.on('close', () => {
-    console.log('Cliente WS desconectado');
-  });
-});
-
-// Função para enviar atualização de pontos via WS
-async function notifyPointsUpdate(email) {
-  const user = await Usuario.findOne({ email });
-  if (!user) return;
-
-  const payload = JSON.stringify({
-    email: user.email,
-    points: user.points
-  });
-
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(payload);
-    }
-  });
-}
-
-// Inicia servidor
+// Inicia o servidor
 server.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
