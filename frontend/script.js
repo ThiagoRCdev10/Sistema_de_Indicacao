@@ -12,6 +12,11 @@ const profilePoints = document.getElementById('profile-points');
 const profileLink = document.getElementById('profile-link');
 const copyBtn = document.getElementById('copyBtn');
 
+// Detecta automaticamente a URL do backend
+const BACKEND_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : 'https://sistema-de-indicacao-yqpi.onrender.com';
+
 // Captura código de referência da URL
 const urlParams = new URLSearchParams(window.location.search);
 const refFromUrl = urlParams.get('ref') || '';
@@ -20,11 +25,10 @@ referralCodeInput.value = refFromUrl;
 registerForm.addEventListener('submit', async e => {
   e.preventDefault();
 
-  // Validação simples
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value;
-  const referralCode = referralCodeInput.value.trim(); // ✅ corrigido
+  const referralCode = referralCodeInput.value.trim();
 
   if (!name || !email || !password) return alert('Preencha todos os campos');
   if (!/\S+@\S+\.\S+/.test(email)) return alert('E-mail inválido');
@@ -32,7 +36,7 @@ registerForm.addEventListener('submit', async e => {
     return alert('Senha deve ter no mínimo 8 caracteres, letras e números');
 
   try {
-    const res = await fetch('http://localhost:3000/api/usuarios/register', {
+    const res = await fetch(`${BACKEND_URL}/api/usuarios/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, referralCode })
@@ -57,10 +61,9 @@ async function showProfile(name, email, referralCode) {
 
   profileName.textContent = name;
 
-  // Função interna para atualizar os pontos
   async function atualizarPontos() {
     try {
-      const res = await fetch(`http://localhost:3000/api/usuarios/${email}`);
+      const res = await fetch(`${BACKEND_URL}/api/usuarios/${email}`);
       const user = await res.json();
 
       if (res.ok) {
@@ -73,13 +76,9 @@ async function showProfile(name, email, referralCode) {
     }
   }
 
-  // Atualiza imediatamente ao abrir o perfil
   await atualizarPontos();
-
-  // Atualiza a cada 1 segundo (1000ms)
   setInterval(atualizarPontos, 1000);
 
-  // Gera o link de indicação
   const link = `${window.location.href.split('?')[0]}?ref=${referralCode}`;
   profileLink.textContent = link;
 
@@ -88,5 +87,3 @@ async function showProfile(name, email, referralCode) {
     alert('Link copiado!');
   };
 }
-
-

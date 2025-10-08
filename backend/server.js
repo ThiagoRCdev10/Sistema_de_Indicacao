@@ -5,8 +5,8 @@ const crypto = require('crypto');
 const Usuario = require('./models/Usuario');
 
 // Configurações
-const PORT = 3000;
-const MONGO_URI = 'mongodb+srv://thiago:kiarakiara12051997@cluster0.u788how.mongodb.net/';
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://thiago:kiarakiara12051997@cluster0.u788how.mongodb.net/';
 
 // Conecta ao MongoDB (especificando o banco de dados BancoDeDados)
 mongoose.connect(MONGO_URI, { dbName: 'BancoDeDados' })
