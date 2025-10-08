@@ -17,10 +17,10 @@ const BACKEND_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
   : 'https://sistema-de-indicacao-yqpi.onrender.com';
 
-// Captura código de referência da URL
+// Captura código de referência da URL corretamente
 const urlParams = new URLSearchParams(window.location.search);
 const refFromUrl = urlParams.get('ref') || '';
-referralCodeInput.value = refFromUrl;
+referralCodeInput.value = refFromUrl; // só o código, sem URL
 
 registerForm.addEventListener('submit', async e => {
   e.preventDefault();
@@ -28,7 +28,7 @@ registerForm.addEventListener('submit', async e => {
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value;
-  const referralCode = referralCodeInput.value.trim();
+  const referralCode = referralCodeInput.value.trim(); // só o código
 
   if (!name || !email || !password) return alert('Preencha todos os campos');
   if (!/\S+@\S+\.\S+/.test(email)) return alert('E-mail inválido');
@@ -79,7 +79,9 @@ async function showProfile(name, email, referralCode) {
   await atualizarPontos();
   setInterval(atualizarPontos, 1000);
 
-  const link = `${window.location.href.split('?')[0]}?ref=${referralCode}`;
+  // Gera link de indicação apenas com o código, sem parâmetros extras
+  const currentUrl = window.location.href.split('?')[0];
+  const link = `${currentUrl}?ref=${referralCode}`;
   profileLink.textContent = link;
 
   copyBtn.onclick = () => {
