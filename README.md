@@ -4,39 +4,87 @@
 Aplicação web SPA para cadastro de usuários e sistema de pontos por indicação.
 
 ## Estrutura
-referral-system/
+Sistema_de_Indicacao/
+│
 ├── backend/
-│ ├── server.js
-│ ├── package.json
-│ ├── models/
-│ └── routes/
+│   ├── server.js
+│   ├── package.json
+│   ├── models/
+│   │   └── Usuario.js
+│   └── routes/
+│       └── userRoutes.js
+│
 ├── frontend/
-│ ├── index.html
-│ ├── style.css
-│ └── script.js
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── node_modules/
+├── .gitattributes
+├── package-lock.json
 └── README.md
 
-## Backend
-1. Entre na pasta `backend/`
-2. Instale dependências:  
-npm install
-3. Inicie o servidor:  
-npm start
-Servidor rodando em `http://localhost:3000`
-
 ## Frontend
-1. Abra o arquivo `frontend/index.html` no navegador.
-2. O formulário de cadastro está disponível na página inicial.
-3. O link de indicação será copiado clicando no botão "Copiar Link".
+
+No Frontend foi utilizado HTML, CSS e JavaScript. A escolhas dessas teecnologias foi por questões de aprendizado mais aprofundado das tecnologias para melhor aprimorar os meus conhecimentos sobre elas antes usar um framework. Além de reduzir bem o uso de memória já terá menos arquivos se comparado com sites usado frameworks. Consequentemente com menos uso de memória o site carrega mais rápido também.
+
+Se for utilizar o servidor remoto basta abrir o o link do site (que está hospedado no GitHub Pages) no navegador:
+
+https://thiagorcdev10.github.io/Sistema_de_Indicacao/frontend/index.html
+
+Se for utilizar o servidor local pode acessar pelo link do GitHub Pages também:
+
+https://thiagorcdev10.github.io/Sistema_de_Indicacao/frontend/index.html 
+
+Ou pode Abrir o arquivo que se encontra em:
+
+Sistema_de_Indicacao/
+├── frontend/
+│ ├── index.html
+
+O formulário de cadastro está disponível na página inicial.
+O link de indicação será copiado clicando no botão "Copiar Link".
+
+## Backend
+
+Para o Backend foi utilizado o Node.js. Os motivos para essa excolha foram:
+
+Node.js usa JavaScript tanto no Frontend Quanto no Backend. Isso permite o reaproveitamento de código, padronização da linguagem e facilitação da comunicação entre frontend e backend.
+O Node.js tem um gerenciador de pacotes (NPM) com milhões de bibliotecas prontas. Isso economiza tempo, porque você não precisa reinventar certas funcionalidades
+
+O Backend pode rodar tanto localmente quanto remotamente pois ele também foi hospedado na plataforma de hospedagem `Render`.
+
+Caso o servidor remoto não esteja funcionando ou esteja desativado também funciona localmente.
+
+Se for utilizar o servidor remoto basta abrir o link do site (que está hospedado no GitHub Pages) no navegador:
+https://thiagorcdev10.github.io/Sistema_de_Indicacao/frontend/index.html
+
+Caso contrario além de será necessário seguir o passo a passo a seguir:
+
+1. Entre na pasta `backend/` por meio do comando cd no Terminal:
+    cd backend
+2. Inicie o servidor por meio do seguinte comando no terminal:  
+    node server.js
+
+Se der certo aparecerá as mensagens a seguir no terminal: 
+🚀 Servidor rodando na porta 3000
+✅ MongoDB conectado ao banco BancoDeDados!
+Por fim abra o arquivo index.html no navegador ou coloque o link do GitHub Pages:
+https://thiagorcdev10.github.io/Sistema_de_Indicacao/frontend/index.html 
 
 ## Banco de Dados
-- MongoDB Atlas
-- Conexão já configurada em `server.js`:
-mongoose.connect('mongodb+srv://usuario:123456789@cluster0.u788how.mongodb.net
-/BancoDeDados?retryWrites=true&w=majority');
+- O Banco de Dados foi o MongoDB Atlas
+- O motivo da escolha foi:
+    Funciona perfeitamente com Node.js (Mongoose)
+    O Atlas oferece um plano gratuito que inclui 512 MB de armazenamento e Backup automático.
+    Posso acessar remotamente o banco.
+
+A estrutura basica do banco de dados no MongoDB é:
+
+Um banco de dados chamado "BancoDeDados" e que possui dentro desse banco uma coleção chamada de "usuarios". Dentro de "usuarios" é onde são armazenados todos os usuarios que fazem o cadastro.
 
 ## Funcionalidades
 - Cadastro de usuário com validação de e-mail e senha.
 - Geração de link de indicação único.
 - Atualização de pontuação ao indicar novos usuários.
-- Página de perfil simples e responsiva.
+- Página de cadastro e de perfil simples e responsivas.
