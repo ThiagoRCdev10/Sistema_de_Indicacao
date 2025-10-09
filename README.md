@@ -25,6 +25,9 @@ Sistema_de_Indicacao/
 │   ├── style.css
 │   └── script.js
 │
+├── imagens/
+│   └── conexao.png
+│
 ├── node_modules/
 ├── .gitattributes
 ├── package-lock.json
