@@ -83,6 +83,9 @@ A estrutura basica do banco de dados no MongoDB é:
 
 Um banco de dados chamado "BancoDeDados" e que possui dentro desse banco uma coleção chamada de "usuarios". Dentro de "usuarios" é onde são armazenados todos os usuarios que fazem o cadastro.
 
+## Colaboração com IA
+Para esse projeto foi Utilizado O ChatGPT como uma ferramenta auxiliar. Essa ferramenta foi aproveitada para gerar um template inicial que foi desenvolvido e alterado ao longo da implementação do site corrigindo incompatibilidades e adicionando funcionalidades que faltavam. A IA foi utilizada para dar uma ideia inicial do design do site, para criação de códigos, explicação de mensagens de erro, explicação de assuntos teóricos sobre CSS, HTML, JavaScritp, MongoDB, Node.js, plataformas de hospedagem, etc.
+
 ## Funcionalidades
 - Cadastro de usuário com validação de e-mail e senha.
 - Geração de link de indicação único.
