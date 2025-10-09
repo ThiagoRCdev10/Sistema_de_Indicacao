@@ -3,6 +3,12 @@
 ## Descrição
 Aplicação web SPA para cadastro de usuários e sistema de pontos por indicação.
 
+## Funcionalidades
+- Cadastro de usuário com validação de e-mail e senha.
+- Geração de link de indicação único.
+- Atualização de pontuação ao indicar novos usuários.
+- Página de cadastro e de perfil simples e responsivas.
+
 ## Estrutura
 Sistema_de_Indicacao/
 │
@@ -84,10 +90,7 @@ A estrutura basica do banco de dados no MongoDB é:
 Um banco de dados chamado "BancoDeDados" e que possui dentro desse banco uma coleção chamada de "usuarios". Dentro de "usuarios" é onde são armazenados todos os usuarios que fazem o cadastro.
 
 ## Colaboração com IA
-Para esse projeto foi Utilizado O ChatGPT como uma ferramenta auxiliar. Essa ferramenta foi aproveitada para gerar um template inicial que foi desenvolvido e alterado ao longo da implementação do site corrigindo incompatibilidades e adicionando funcionalidades que faltavam. A IA foi utilizada para dar uma ideia inicial do design do site, para criação de códigos, explicação de mensagens de erro, explicação de assuntos teóricos sobre CSS, HTML, JavaScritp, MongoDB, Node.js, plataformas de hospedagem, etc.
+Para esse projeto foi Utilizado O ChatGPT como uma ferramenta auxiliar. Essa ferramenta foi aproveitada para gerar um template inicial que foi desenvolvido e alterado ao longo da implementação do site corrigindo incompatibilidades e adicionando funcionalidades que faltavam. 
+A IA foi utilizada para dar uma ideia inicial do design do site, para criação de códigos, explicação de mensagens de erro, explicação de assuntos teóricos sobre CSS, HTML, JavaScritp, MongoDB, Node.js, plataformas de hospedagem, etc.
+Neste projeto, por meio da IA, foi possiível aprender muitos conceitos teóricos utilizados na implementação do site, além de utilizar ela como meio de agilizar minhas tarefas, deixando serviços mais "braçais" para a IA e os que exigiam a parte de compreenssão e raciocínio para o desenvolvedor.
 
-## Funcionalidades
-- Cadastro de usuário com validação de e-mail e senha.
-- Geração de link de indicação único.
-- Atualização de pontuação ao indicar novos usuários.
-- Página de cadastro e de perfil simples e responsivas.
