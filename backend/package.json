@@ -1,0 +1,16 @@
+{
+  "name": "sistema-de-indicacao",
+  "version": "1.0.0",
+  "description": "Backend para aplicação web SPA de cadastro de usuários e sistema de pontos por indicação.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^8.19.0"
+  }
+}

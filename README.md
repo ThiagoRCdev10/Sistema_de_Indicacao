@@ -13,6 +13,7 @@ Aplicação web SPA para cadastro de usuários e sistema de pontos por indicaç�
 Sistema_de_Indicacao/
 │
 ├── backend/
+│   ├── package.json
 │   ├── server.js
 │   ├── package.json
 │   ├── models/
